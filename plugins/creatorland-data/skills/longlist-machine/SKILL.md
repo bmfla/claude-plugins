@@ -30,6 +30,13 @@ prices, the nine conventions). This skill honors thrifty/thorough credit modes
 > to contacts. Keep `broad` for the sizing pool, not the outreach cut. Canon:
 > `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` convention 14.
 
+> **A sizing question is not a longlist run.** If the user is really asking
+> *how many* creators exist for a brief ("how big is the pool", "is there
+> enough supply"), answer with `count_creators` first — a free, rounded
+> headline count — instead of paying to build a 50–150-row longlist just to
+> gauge size. `search_creators` (this skill's engine) returns a capped page,
+> never a census. Build the longlist once the user actually wants the pool.
+
 ## Inputs to collect
 
 - **The brief** (required) — any written format; normalization is your job.

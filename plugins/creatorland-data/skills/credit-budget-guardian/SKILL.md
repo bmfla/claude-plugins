@@ -37,6 +37,7 @@ thrifty/thorough contract this skill enforces).
 |---|---:|---:|
 | `get_creator_profile` | 1 | $0.025 |
 | `search_creators` | 2 | $0.05 |
+| `count_creators` (free headline; 1-credit detail) | free | $0 |
 | `query_market_intelligence` (each call AND each refusal-ladder retry) | 5 | $0.125 |
 | profile fan-out of N | 1×N | $0.025×N |
 
