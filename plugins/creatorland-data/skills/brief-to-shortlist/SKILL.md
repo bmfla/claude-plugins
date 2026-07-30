@@ -34,6 +34,13 @@ apply to casting). This skill honors thrifty/thorough credit modes
 > padding to a round number. Canon:
 > `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` convention 14.
 
+> **Lead with the supply answer when the client asks "is there enough?"**
+> Before (or alongside) casting, `count_creators` gives a free, rounded
+> headline count of how many creators match the brief's filters — the
+> client-facing "pool size" number. `search_creators` returns a capped
+> ranked page, so quote the count for supply and the shortlist for the
+> curated picks; never relay the shortlist length as the total pool.
+
 ## Inputs to collect
 
 - **The brief** (required) — any written format. Do not make the user

@@ -127,6 +127,7 @@ use these tools; outreach is an additive skill layer.
 |---|---:|
 | `get_creator_profile` | 1 |
 | `search_creators` | 2 |
+| `count_creators` (supply sizing, free headline) | free |
 | `match_creators` (bulk match, free) | 0 |
 | `enrich_matches` | 3 per matched creator |
 | `get_audience_report` (premium, pro) | 25 (cache hit = same, pure margin) |

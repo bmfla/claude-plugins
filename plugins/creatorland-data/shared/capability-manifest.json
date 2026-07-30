@@ -86,6 +86,11 @@
       "entitlement": "creator_discovery"
     },
     {
+      "name": "count_creators",
+      "credits": 0,
+      "entitlement": "creator_discovery"
+    },
+    {
       "name": "query_market_intelligence",
       "credits": 5,
       "entitlement": "market_intelligence"
