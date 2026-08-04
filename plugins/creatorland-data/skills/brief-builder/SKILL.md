@@ -15,6 +15,8 @@ Read first: ${CLAUDE_PLUGIN_ROOT}/shared/conventions.md (tool schemas, credit
 prices, the seven conventions). This skill honors thrifty/thorough credit
 modes and Refusal Recovery (relevant only to the optional enrichment call).
 
+Calibration: if `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` exists (written by `/intake`), read it first — persona, familiarity (1–3), and saved defaults set narration level and assumed context (conventions.md §15).
+
 > Trigger discrimination: the user wants a brief **document** out of a
 > transcript. If they want **creators found** from a transcript, use
 > `transcript-to-shortlist`. If they already have a written brief and want a

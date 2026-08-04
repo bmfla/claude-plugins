@@ -18,6 +18,8 @@ modes (${CLAUDE_PLUGIN_ROOT}/shared/credit-modes.md), Refusal Recovery
 (${CLAUDE_PLUGIN_ROOT}/shared/refusal-recovery.md), and the Freshness Gate
 (${CLAUDE_PLUGIN_ROOT}/shared/freshness-gate.md).
 
+Calibration: if `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` exists (written by `/intake`), read it first — persona, familiarity (1–3), and saved defaults set narration level and assumed context (conventions.md §15).
+
 ## Inputs to collect
 
 - **Creator identifier** (required) — handle, profile URL, or email. Map to

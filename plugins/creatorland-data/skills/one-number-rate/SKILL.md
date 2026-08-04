@@ -15,6 +15,8 @@ prices, the seven conventions). This skill is thrifty by design and honors
 Refusal Recovery (${CLAUDE_PLUGIN_ROOT}/shared/refusal-recovery.md) with a
 capped ladder.
 
+Calibration: if `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` exists (written by `/intake`), read it first — persona, familiarity (1–3), and saved defaults set narration level and assumed context (conventions.md §15).
+
 ## Inputs to collect
 
 - **Vertical** — from the question itself if named ("…in beauty"), otherwise

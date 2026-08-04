@@ -14,6 +14,8 @@ Read first: ${CLAUDE_PLUGIN_ROOT}/shared/conventions.md (tool schemas, credit
 prices, the seven conventions). This skill honors thrifty/thorough credit
 modes, Refusal Recovery, and the Freshness Gate.
 
+Calibration: if `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` exists (written by `/intake`), read it first — persona, familiarity (1–3), and saved defaults set narration level and assumed context (conventions.md §15).
+
 ## Inputs to collect
 <What to ask the user for, what to default, what to never ask twice.>
 

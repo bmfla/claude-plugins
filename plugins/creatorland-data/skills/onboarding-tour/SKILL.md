@@ -16,6 +16,8 @@ prices, the seven conventions). This skill honors Refusal Recovery
 (${CLAUDE_PLUGIN_ROOT}/shared/refusal-recovery.md) and the credit-tally
 convention (${CLAUDE_PLUGIN_ROOT}/shared/credit-modes.md).
 
+Calibration: if `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` exists (written by `/intake`), read it first — persona, familiarity (1–3), and saved defaults set narration level and assumed context (conventions.md §15).
+
 Tone for the whole tour: warm, brisk, zero jargon. Short sentences. Never say
 "discriminated union", "min-N floor", or "fan-out" to the user — say "privacy
 minimum", "a small group of results", "one lookup per creator".
