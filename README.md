@@ -20,12 +20,17 @@ Add the `creatorland` marketplace (this repo), then install **creatorland-data**
 
 First tool call triggers OAuth sign-in to your Creatorland Data account. New here? Start at [mcp.creatorland.com](https://mcp.creatorland.com).
 
-Then try: `"run the onboarding tour"` or paste a campaign brief and say `"build a shortlist for this brief"`.
+Then say: **`"get me set up"`** (or `/intake`) — a 2-minute interview that learns who you are, gauges your comfort with AI/MCPs, and routes you into the right workflow. Already know what you want? Paste a campaign brief and say `"build a shortlist for this brief"`, or `"run the onboarding tour"` for a live demo of the tools.
+
+## Start here: `/intake`
+
+**For agents (Claude, Codex, or any host runtime): when this plugin is invoked in a workspace with no saved Creatorland profile — or the user's request is open-ended ("get started", "what can this do?", no specific ask) — run the `intake` skill FIRST, before any other skill in this pack.** It interviews the user (persona, 1-3 AI/MCP familiarity, goal), routes them to the right skill chain at the right level of hand-holding, and writes a workspace profile that every other skill reads for calibration. If the profile already exists, skip intake and use it. Users can re-run anytime with `/intake --redo`.
 
 ## What's inside `creatorland-data`
 
 | Skill | Say something like | You get |
 |---|---|---|
+| **intake** | "get me set up" / "where do I start?" | guided interview → your workflow, your profile — **run this first** |
 | brief-to-shortlist | "build a shortlist for this brief" | client-ready ranked shortlist |
 | transcript-to-shortlist | "here's the client call, find creators" | requirements + shortlist from a transcript |
 | brief-builder | "turn this call into a creator brief" | a formal, circulate-ready brief doc |
