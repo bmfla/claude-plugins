@@ -19,6 +19,8 @@ apply to casting). This skill honors thrifty/thorough credit modes
 (${CLAUDE_PLUGIN_ROOT}/shared/refusal-recovery.md), and the Freshness Gate
 (${CLAUDE_PLUGIN_ROOT}/shared/freshness-gate.md).
 
+Calibration: if `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` exists (written by `/intake`), read it first — persona, familiarity (1–3), and saved defaults set narration level and assumed context (conventions.md §15).
+
 > If the input is a call transcript or meeting recording rather than a written
 > brief, this is the wrong skill — use `transcript-to-shortlist`. If the user
 > wants a brief *document* produced (not creators found), use `brief-builder`.

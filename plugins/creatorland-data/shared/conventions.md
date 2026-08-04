@@ -256,3 +256,12 @@ Credit packs are **volume-tiered**, not a single flat pack: base $25 / 1,000 = $
       low-`relative_fit` rows (within-set fit, `1.0` = strongest) rather than
       padding to a round number; disclose how many you trimmed and the cutoff.
 
+15. **Workspace-profile calibration.** Before starting, read
+    `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` if it
+    exists (written by `/intake`): persona, AI/MCP familiarity (1–3), and
+    saved defaults (vertical, markets, deliverable and credit posture) set
+    your narration level, assumed context, and defaults — a familiarity-1
+    user gets each paid call explained before it runs; a familiarity-3 user
+    gets the chain and costs up front. No profile and the user seems new?
+    Offer `/intake` once — never force it mid-task, and never re-ask anything
+    the profile already answers.

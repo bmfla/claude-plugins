@@ -17,6 +17,8 @@ relax the binding constraint, 13 auto-chain profile lookups). This skill honors
 thrifty/thorough credit modes, Refusal Recovery, and the Freshness Gate via the
 brief-to-shortlist flow it delegates to.
 
+Calibration: if `~/.claude/plugins/config/creatorland/creatorland-data/PROFILE.md` exists (written by `/intake`), read it first — persona, familiarity (1–3), and saved defaults set narration level and assumed context (conventions.md §15).
+
 > Trigger discrimination: input is a **call/transcript/recording** and the
 > user wants **creators found**. If they already have a written brief, use
 > `brief-to-shortlist`. If they want a formal brief *document* from the call
