@@ -69,8 +69,12 @@ intent summary** + **confidence** + touches sent:
 ```json
 get_connection_status { "conn_ref": "<ref>" }
 ```
-0 credits each. Work ONLY from the classification + the brand-safe intent
-summary the server returns — the server already PII-scrubs reply content, and
+0 credits each. Also read each row's `engagement` block (connection-flow.md) —
+whether the creator clicked or opened before replying is useful context for the
+draft (a clicker has already looked at what you linked; a click is reliable
+intent, an open directional only, and `tracking_enabled: false` means the send
+predates tracking — unmeasured, not disengaged). Work ONLY from the
+classification + the brand-safe intent summary the server returns — the server already PII-scrubs reply content, and
 this skill must never surface raw reply text (which could carry an address or
 handle the creator typed). If a returned summary still looks like it contains
 contact details, drop it to the bare classification rather than quoting it.
@@ -111,6 +115,8 @@ _Creatorland Data · inbound replies as of <date>_
 For each:
 **<campaign type> · conn <ref-short> · confidence <hi/med/lo>**
 - They're asking: <brand-safe intent summary — no raw reply text, no contact>
+- Engagement before replying: <"clicked <when>" / "opened <when> (directional)"
+  / "no signal" / "sent before tracking — unmeasured">
 - Suggested reply (you send; matchmaker relays):
   > <2–4 sentence brand-safe draft answering the question; comp as a corpus
   > band or [brand to confirm]; no contact handling; no invented quotes>

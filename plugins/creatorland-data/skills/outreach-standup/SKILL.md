@@ -62,7 +62,7 @@ first run). Schema:
 ```json
 {
   "last_run": "<ISO date>",
-  "seen": { "<conn_ref>": { "status": "<last status>", "touches": "<n>/3", "last_seen": "<ISO date>" } }
+  "seen": { "<conn_ref>": { "status": "<last status>", "touches": "<n>/3", "open_count": 0, "click_count": 0, "last_seen": "<ISO date>" } }
 }
 ```
 
@@ -103,10 +103,15 @@ unchanged since last run is steady-state, not movement, and does not appear):
 - **New stalls** — `delivered`, no reply, Day-7 of the 3-touch sequence now
   approaching (wasn't flagged stalling last run).
 - **New opt-outs** — newly `opted_out` since last run.
+- **New opens/clicks** — the `engagement` block's `open_count` / `click_count`
+  grew versus the snapshot (or `opened_at` / `clicked_at` newly set) on rows
+  that have NOT replied. Clicks lead (reliable intent — these are warming);
+  opens are directional only (MPP inflates them). Skip rows with
+  `tracking_enabled: false` — unmeasured, not unmoved.
 
 **Step 5 — Pick the single "do this next."** One action item, highest-leverage
 first: open questions needing answers (→ `reply-triage`) usually outrank new
-yeses to broker, which outrank stalls to nudge. State it as one line with a
+yeses to broker, which outrank new clickers to nudge, which outrank stalls. State it as one line with a
 count and a pointer (e.g. *"3 questions need answers → reply-triage"*).
 
 **Step 6 — Write the digest and update state.** Merge this run's statuses into
@@ -126,6 +131,7 @@ _<window, e.g. "since yesterday"> · <date> · Creatorland Data_
 - New yeses: <i> → ready to broker (<conn_refs>)
 - New stalls: <s> delivered, Day-7 approaching (<conn_refs>)
 - New opt-outs: <o> (<conn_refs>)
+- New clicks: <c> (<conn_refs>) · new opens: <op> (directional — MPP inflates opens)
 
 **Do this next:** <single highest-leverage action + count> → <pointer skill>
 _e.g. "3 questions need answers → reply-triage"_
@@ -169,6 +175,10 @@ digest. If it's a baseline run, label it baseline and report counts only.
   these tools and never appear or are inferred (convention 7 + connection-flow
   privacy invariants). A new yes is "ready to broker via Creatorland's
   double-opt-in intro," never an address.
+- **Engagement framing (connection-flow.md rules).** Clicks headline (reliable
+  intent); opens are directional only (automated privacy prefetches, e.g. Apple
+  Mail). Tracking since 2026-08-18 — pre-tracking rows are unmeasured, never
+  "0 opens".
 - **The diff is client-side.** "Moved since last run" is computed against a
   local snapshot, not a server change-feed — so it only reflects movement since
   the last time this skill actually ran. Say so on the first few runs and label

@@ -1,6 +1,6 @@
 # Creatorland Data
 
-Creator discovery, brief/transcript-to-shortlist, fair-price negotiation, and rate benchmarking for influencer-marketing teams. Connects the [Creatorland Data MCP](https://mcp.creatorland.com) and ships 47 companion skills that encode agency and brand workflows.
+Creator discovery, brief/transcript-to-shortlist, fair-price negotiation, and rate benchmarking for influencer-marketing teams. The outreach skills read live engagement signals on every send (delivery, opens, clicks — clicks as reliable intent, opens directional; tracking since 2026-08-18). Connects the [Creatorland Data MCP](https://mcp.creatorland.com) and ships 47 companion skills that encode agency and brand workflows.
 
 ## Quick start
 
