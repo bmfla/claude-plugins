@@ -62,12 +62,41 @@ later campaigns send without the gate. Tell first-time senders up front.
 
 ### `get_connection_status` — free (0 credits)
 `{ "conn_ref": "<ref>" }` → lifecycle status, touches sent (of 3), latest reply
-classification if any, next scheduled touch. Scoped to your account. No contact details.
+classification if any, next scheduled touch, and the per-connection `engagement`
+block (below). Scoped to your account. No contact details.
 
 ### `list_connections` — free (0 credits)
 `{ "status"?: "queued|sending|delivered|replied_interested|replied_declined|replied_question|accepted_inapp|opted_out|expired", "limit"?: 1–100 }`
 → this brand's outreaches newest-first: each carries `conn_ref`, status, campaign
-type, next scheduled touch. Scoped to your account. No contact details ever returned.
+type, next scheduled touch, and the per-connection `engagement` block (below).
+Scoped to your account. No contact details ever returned.
+
+### The `engagement` block (both read tools, free)
+
+Every connection row carries email-engagement signals rolled up across its sends:
+
+```json
+"engagement": {
+  "delivered": true,          // any send confirmed delivered
+  "opened_at": "<ISO>|null",  // earliest open across the sends
+  "clicked_at": "<ISO>|null", // earliest click across the sends
+  "open_count": 3,            // total opens (MPP-inflated; directional)
+  "click_count": 1,           // total clicks (reliable intent)
+  "tracking_enabled": true    // false = sends predate tracking (or none sent)
+}
+```
+
+How every skill must frame these (NON-NEGOTIABLE):
+
+- **Clicks are the headline signal.** A click is a deliberate act — treat
+  `clicked_at` / `click_count` as reliable intent.
+- **Opens are directional only.** Open counts include automated privacy
+  prefetches (e.g. Apple Mail's Mail Privacy Protection), so opens overcount.
+  Never present an open rate as accurate; label it directional.
+- **Tracking since 2026-08-18 — no backfill.** Sends before the tracking epoch
+  report `tracking_enabled: false` and null/zero fields. Present those as
+  "sent before tracking was enabled", NEVER as "0 opens / 0 clicks" — a
+  pre-tracking outreach with no signal is unmeasured, not unengaged.
 
 ## Entitlement + graceful degradation (NON-NEGOTIABLE)
 

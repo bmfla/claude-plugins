@@ -101,11 +101,13 @@ queued → sending → delivered →
 ```
 
 For each outreach capture: `conn_ref`, campaign type, **touches sent (of 3)**,
-**next scheduled touch**, and **age** (time since the outreach was created /
+**next scheduled touch**, **age** (time since the outreach was created /
 first sent — derive from the timestamps the tools return; if a precise created
-timestamp isn't returned, say "age unknown" rather than guessing).
+timestamp isn't returned, say "age unknown" rather than guessing), and the
+**`engagement` block** (opened_at / clicked_at / click_count / tracking_enabled —
+see connection-flow.md for the exact shape and the framing rules).
 
-**Step 4 — Lift the action-needed buckets to the top.** Three buckets are where
+**Step 4 — Lift the action-needed buckets to the top.** Four buckets are where
 the operator's attention belongs, so they lead the board:
 
 - **Interested — awaiting your move** (`replied_interested`): the creator said
@@ -114,10 +116,18 @@ the operator's attention belongs, so they lead the board:
   take forward," not "here's their email."
 - **Question — needs a reply** (`replied_question`): the creator asked
   something; a reply is owed. → point to **`reply-triage`** to draft it.
+- **Engaged, not replied** (`delivered`, no reply classification, but the
+  `engagement` block shows a click — or, weaker, an open): the warm-lead
+  surface. A click is reliable intent (lead with clickers); an open alone is
+  directional only (MPP inflates opens — say so, don't oversell). Rows with
+  `tracking_enabled: false` never appear here as "no engagement" — they're
+  unmeasured, not cold.
 - **Stalled — delivered, no reply, Day-7 approaching** (`delivered` with no
   reply classification and the next/last touch nearing the Day-7 end of the
   3-touch sequence): the sequence is about to lapse. → point to the
   **follow-up flow** if the brand wants one more nudge before it expires.
+  (An outreach can sit in both engaged-not-replied and stalled; show it in
+  engaged-not-replied — the warmer read — and note the sequence is ending.)
 
 Everything else (queued, sending, mid-sequence delivered, accepted, declined,
 opted-out, expired) renders below as the steady-state pipeline.
@@ -144,6 +154,14 @@ _Creatorland Data · live board as of <date> · <campaign focus, if any>_
 |---|---|---|---|---|
 | <ref> | <campaign_type> | <n>/3 | <when> | <age> |
 > → Draft replies with **reply-triage**.
+
+### Engaged, not replied (<e>) — warm leads
+| conn_ref | Campaign | Touches | Clicked | Opened | Age |
+|---|---|---|---|---|---|
+| <ref> | <campaign_type> | <n>/3 | <clicked_at or —> | <opened_at or —> | <age> |
+> Clicks = reliable intent; opens are directional only (privacy prefetches, e.g.
+> Apple Mail, inflate them). Tracking since 2026-08-18 — earlier sends are
+> unmeasured, not cold.
 
 ### Stalled — delivered, no reply, Day-7 approaching (<s>)
 | conn_ref | Campaign | Touches | Next touch | Age |
@@ -200,6 +218,11 @@ board.
 - **Never promise a reply or a yes.** Counts and stages are facts; outcomes are
   the creator's. "Reply rate so far" is a tally of what's happened, not a
   forecast. "Stalled" describes the sequence state, not a verdict on the creator.
+- **Engagement framing (connection-flow.md rules).** Clicks are the headline
+  intent signal; opens are directional only (automated privacy prefetches, e.g.
+  Apple Mail, inflate them). `tracking_enabled: false` means "sent before
+  tracking was enabled (2026-08-18)" — present it as unmeasured, never as
+  "0 opens / 0 clicks".
 - **Graceful degradation, never an error.** No `creator_connections` entitlement
   → "not on your plan, here's how to upgrade." No outreaches → "no outreaches
   found yet." Empty stage filter → "nothing in that stage right now." Always a

@@ -88,8 +88,10 @@ get_connection_status { "conn_ref": "<ref from step 1>" }
 ```
 
 → lifecycle status, touches sent (of 3), latest reply classification if any,
-next scheduled touch, and the timestamps the tool returns (created / first-sent
-/ reply / accepted, whatever is present). Still no contact details, still free —
+next scheduled touch, the `engagement` block (opened_at / clicked_at /
+click_count / tracking_enabled — see connection-flow.md), and the timestamps
+the tool returns (created / first-sent / reply / accepted, whatever is
+present). Still no contact details, still free —
 so detail every row; the funnel is only as honest as the per-row classifications.
 
 **Step 3 — Compute the funnel (no tool calls).** Roll the in-scope outreaches up
@@ -98,12 +100,27 @@ into the stages, counting each outreach once at the furthest stage it reached:
 ```
 reached (all in scope)
   → delivered (delivered or any later stage)
-    → replied (replied_interested · replied_question · replied_declined, or accepted)
-      → accepted (accepted_inapp)
+    → opened (engagement.opened_at set — directional; MPP inflates opens)
+      → clicked (engagement.clicked_at set — the reliable intent signal)
+        → replied (replied_interested · replied_question · replied_declined, or accepted)
+          → accepted (accepted_inapp)
 ```
+
+The opened/clicked stages count only rows with `tracking_enabled: true`.
+**Tracking since 2026-08-18** — if any in-scope outreach predates tracking,
+compute open/click rates over the tracked subset only and say so ("open/click
+rates over <t> tracked of <delivered> delivered; the rest were sent before
+tracking was enabled"). A campaign wholly before the epoch gets NO open/click
+rows — "engagement tracking wasn't enabled for this campaign", never fake zeros.
+(Opened/clicked are signal stages, not strict funnel prerequisites — a reply
+without a recorded open still counts as replied.)
 
 Derived rates (each a fact about what happened, never a forecast):
 - **Response rate** = replied ÷ delivered.
+- **Click rate** = clicked ÷ tracked-delivered (the headline engagement metric —
+  clicks are reliable intent).
+- **Open rate** = opened ÷ tracked-delivered — **label it directional** (privacy
+  prefetches, e.g. Apple Mail, inflate opens; never present it as accurate).
 - **Interested-rate** = replied_interested ÷ delivered (the warm signal).
 - **Accept-rate** = accepted ÷ delivered.
 - **Reply mix** = interested / question / declined as a share of replies.
@@ -146,12 +163,17 @@ Response rate **<r>%** · interested-rate **<i>%** · accept-rate **<a>%**
 |---|---:|---:|
 | Reached | <reached> | — |
 | Delivered | <delivered> | <delivered/reached> |
+| Opened (directional — MPP) | <opened> | <o>% of tracked |
+| Clicked (reliable intent) | <clicked> | <c>% of tracked |
 | Replied | <replied> | <r>% |
 | — interested | <ri> | <ri/delivered>% |
 | — question | <rq> | <rq/delivered>% |
 | — declined | <rd> | <rd/delivered>% |
 | Accepted (in-app) | <accepted> | <a>% |
 <rates under the small-N floor render as raw counts + "n too small to rate">
+> Engagement tracking since 2026-08-18: open/click rates cover the <t> tracked
+> sends<", the other <n−t> predate tracking (unmeasured, not zero)" if any>.
+> Clicks = reliable intent (headline); opens directional only (MPP inflates).
 
 ## Slide: Reply quality & speed
 Reply mix: <interested>% interested · <question>% question · <declined>% declined
@@ -209,6 +231,11 @@ non-entitled case) — never a fake funnel.
   rate predicts future outreach.
 - **Small-N honesty.** Under ~8 delivered in any cut → show raw counts and
   caveat the percentage as "n too small to rate." Don't dress 1-of-3 up as 33%.
+- **Engagement honesty (connection-flow.md rules).** Click rate is the headline
+  engagement metric; open rate is directional only (automated privacy
+  prefetches inflate it) and is always labeled as such. Open/click rates are
+  computed over tracked sends only (tracking since 2026-08-18) — pre-tracking
+  outreaches are excluded and named as unmeasured, never counted as zeros.
 - **Median time-to-yes is timestamp-bound.** Compute it only from timestamps the
   tools actually returned; otherwise "unknown." Never estimate a duration.
 - **Slice only where derivable.** Compute a tier/vertical breakdown only from
