@@ -56,14 +56,23 @@ If a required field is missing at launch, the tool itself returns a
 question-shaped validation error — relay it verbatim and continue the
 interview. Never invent a value to fill a gap.
 
-## The preview (mandatory before any send)
+## The preview (mandatory before any send) — show the WORST CASE
 
 Before calling `request_creator_connection`, render the touch-1 email via the
-preview endpoint and show the user the subject and body:
+preview endpoint and show the user the subject and body — **twice**, because a
+real campaign always contains both kinds of recipient:
+
+1. **A named recipient** — pass a real example `creator_display_name` from
+   their target list.
+2. **A nameless recipient (the worst case)** — omit `creator_display_name`
+   entirely. Many reachable creators have no name on file; this render is what
+   THEY get: the subject must read naturally with no name and no placeholder
+   (never "there"/"friend"), and the on-behalf-of identity must match the
+   brief everywhere.
 
 ```
 POST {MCP_BASE}/outreach/preview
-{ "creator_display_name": "<a real example recipient or omit>",
+{ "creator_display_name": "<a real example recipient — or OMIT for the worst case>",
   "opportunity": { ...the brief... },
   "brand": { "name": "...", "represented_by": "..." } }
 ```
@@ -72,9 +81,13 @@ POST {MCP_BASE}/outreach/preview
 - `source: "vetted_template"` — the static template floor (composition is off
   or fell back); still exactly what would send in that case.
 
-Nothing is queued, sent, or charged by a preview. Iterate the brief with the
-user until they approve. **Never call `request_creator_connection` without the
-user's explicit approval of a preview.**
+Present BOTH renders, **subjects included**, side by side before asking for
+launch approval. Nothing is queued, sent, or charged by a preview. Iterate the
+brief with the user until they approve. **Never call
+`request_creator_connection` without the user's explicit approval of both
+previews.** Never pass a placeholder like "there" as a display name to make
+the named preview work — the intake normalizes placeholders away, and the
+nameless preview already covers that case honestly.
 
 ## First-campaign expectations (tell new senders)
 
