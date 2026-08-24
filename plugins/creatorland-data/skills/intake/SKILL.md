@@ -174,7 +174,7 @@ invoke it.
 **Reach out / pitch**
 - Brand/agency → creator: `cast-and-connect` (shortlist → vetted connection requests) with `conflict-safe-connect` / `suppression-aware-prescreen` as guards; track with `connection-pipeline-tracker`, `reply-triage`, `outreach-standup`, `outreach-wrap-report`; forecast spend with `outreach-spend-forecaster`
 - Talent manager → brands: `creator-brand-matchmaker` (pitch-target memo)
-- Creator → a brand: the `request_brand_connection` tool (pro) — pitch a brand directly; double-opt-in, contact details revealed only when both sides say yes
+- Creator → a brand: `pitch-a-brand` (pro) — pitch a named brand directly via `request_brand_connection`; free to enqueue, 10 credits only on an approved send, contact resolved server-side, oracle-safe, first pitch human-reviewed
 
 **Work my roster**
 - `roster-enricher` (upgrade a spreadsheet) · `casting-gap-analysis` (coverage holes) · `roster-microsite-builder` (shareable page) · `talent-scout` (standing what's-new watch)

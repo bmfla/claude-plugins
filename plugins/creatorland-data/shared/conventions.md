@@ -112,14 +112,17 @@ the spend.
 ### Server-side prompts (use them — they're maintained with the server)
 `shortlist-from-brief`, `lookalike-search`, `fair-price-check`.
 
-### Connection tools — brand→creator outreach (used ONLY by connection-enabled skills)
-`request_creator_connection` (10 credits), `get_connection_status` (free),
-`list_connections` (free). Entitlement-gated behind `creator_connections`
-(pro + pilot); non-entitled plans get a successful refused envelope. Full
-contract — schemas, mandatory pre-flight (credit estimate + confirm +
-suppression pre-screen), graceful degradation, and privacy invariants — lives in
-`${CLAUDE_PLUGIN_ROOT}/shared/connection-flow.md`. The read-only catalog does NOT
-use these tools; outreach is an additive skill layer.
+### Connection tools — outreach in BOTH directions (used ONLY by connection-enabled skills)
+`request_creator_connection` (10 credits, brand→creator),
+`request_brand_connection` (free to enqueue; 10 credits ONLY on an approved send,
+creator→brand pitch), `get_connection_status` (free), `list_connections` (free).
+`request_creator_connection` is entitlement-gated behind `creator_connections`
+(pro + pilot); `request_brand_connection` behind `brand_connections` (pro);
+non-entitled plans get a successful refused envelope. Full contract — schemas,
+mandatory pre-flight (credit estimate + confirm + suppression pre-screen),
+oracle-safe pitch acknowledgement, graceful degradation, and privacy invariants —
+lives in `${CLAUDE_PLUGIN_ROOT}/shared/connection-flow.md`. The read-only catalog
+does NOT use these tools; outreach is an additive skill layer.
 
 ## Credit price index ($25 / 1,000-credit pack → $0.025/credit)
 
@@ -136,6 +139,7 @@ use these tools; outreach is an additive skill layer.
 | `query_market_intelligence` | 5 |
 | profile fan-out of N | 1×N |
 | `request_creator_connection` | 10 (one charge per creator, whole sequence) |
+| `request_brand_connection` (creator→brand pitch) | free to enqueue; 10 on an approved send |
 | `get_connection_status` / `list_connections` | free |
 | reaching N creators | 10×N |
 

@@ -1,14 +1,16 @@
 # Connection Flow (shared module — for connection-enabled skills ONLY)
 
-This module governs the **brand→creator outreach** tools. It is referenced
-**only by the Wave 2 connection-enabled skills** (cast-and-connect,
+This module governs the **outreach / connection** tools in **both
+directions**: **brand→creator outreach** (`request_creator_connection`) and the
+**creator→brand pitch** (`request_brand_connection`). It is referenced **only by
+the connection-enabled skills** (cast-and-connect, pitch-a-brand,
 connection-pipeline-tracker, reply-triage, conflict-safe-connect,
 outreach-spend-forecaster, and their followers). The read-only catalog
 (brief-to-shortlist, conflict-check, fair-price-brief, …) does **NOT** reference
 this file and must never call these tools — outreach is an additive layer, not a
 change to the advice catalog.
 
-## The three connection tools (ground truth — match exactly)
+## The connection tools (ground truth — match exactly)
 
 ### `request_creator_connection` — 10 credits (ONE charge per creator, whole sequence)
 Asks Creatorland's matchmaker (`matchmaker@creatorland.com`) to reach a creator
@@ -60,14 +62,51 @@ later campaigns send without the gate. Tell first-time senders up front.
   is refused and **NOT charged** — track the existing one via `get_connection_status`.
 - 10 credits cover the whole sequence + reply monitoring + the intro. Never per-email.
 
+### `request_brand_connection` — creator→brand pitch (enqueue FREE; 10 credits ONLY on an approved send)
+The mirror of `request_creator_connection`, in the other direction: it lets a
+**creator pitch a brand**. The creator NAMES a brand as free text; Creatorland
+resolves the brand contact **server-side** — the creator never sees, picks, or
+supplies a contact, and the tool never reveals whether a given brand is
+reachable. **Enqueuing is free.** The 10-credit charge lands **only when an
+approved pitch actually sends** — never on enqueue, never if the pitch is held
+or never matched.
+
+```json
+request_brand_connection {
+  "brand": "<required: the brand name, free text — the creator names it; the contact is resolved SERVER-SIDE>",
+  "pitch": {
+    "campaign_type": "<required>",
+    "message": "<required: the creator's pitch message>"
+  }
+}
+```
+
+- **Oracle-safe acknowledgement.** The acknowledgement is **byte-identical**
+  whether or not a contact exists for the named brand — enqueuing a pitch NEVER
+  confirms (or denies) that the brand is reachable. Frame it as "your pitch is
+  queued," never "we found/have a contact at <brand>."
+- **First pitch is human-reviewed** before it sends (same spirit as the
+  first-campaign gate above); later pitches send without the hold. Tell
+  first-time pitchers this up front.
+- **Never promises a yes.** Creatorland reaches the brand on the creator's
+  behalf; the outcome is the brand's. A queued pitch is a pitch sent, not a deal.
+- Entitlement-gated behind **`brand_connections`** (pro) — a plan without it
+  gets a **SUCCESSFUL refused envelope, not an error** (degrade per the
+  entitlement section below).
+- Track the pitch lifecycle with the free read tools below
+  (`get_connection_status` by `conn_ref`, `list_connections`) — they cover
+  connections in **both** directions.
+
 ### `get_connection_status` — free (0 credits)
-`{ "conn_ref": "<ref>" }` → lifecycle status, touches sent (of 3), latest reply
+`{ "conn_ref": "<ref>" }` (a `conn_ref` from either direction) → lifecycle
+status, touches sent (of 3), latest reply
 classification if any, next scheduled touch, and the per-connection `engagement`
 block (below). Scoped to your account. No contact details.
 
 ### `list_connections` — free (0 credits)
 `{ "status"?: "queued|sending|delivered|replied_interested|replied_declined|replied_question|accepted_inapp|opted_out|expired", "limit"?: 1–100 }`
-→ this brand's outreaches newest-first: each carries `conn_ref`, status, campaign
+→ your account's connections newest-first (brand→creator outreaches AND
+creator→brand pitches): each carries `conn_ref`, status, campaign
 type, next scheduled touch, and the per-connection `engagement` block (below).
 Scoped to your account. No contact details ever returned.
 
@@ -101,8 +140,9 @@ How every skill must frame these (NON-NEGOTIABLE):
 ## Entitlement + graceful degradation (NON-NEGOTIABLE)
 
 `request_creator_connection` is entitlement-gated behind **`creator_connections`**
-(pro + pilot plans). A plan without it gets a **SUCCESSFUL refused envelope, not
-an error.** Every connection-enabled skill MUST:
+(pro + pilot plans); `request_brand_connection` behind **`brand_connections`**
+(pro). A plan without the relevant entitlement gets a **SUCCESSFUL refused
+envelope, not an error.** Every connection-enabled skill MUST:
 
 - Detect the refused envelope and **still deliver its read-only half** — the
   shortlist, the rate band, the pipeline view it could produce without reaching —
@@ -146,3 +186,9 @@ an error.** Every connection-enabled skill MUST:
   sequence or opted out **in our records**" — never an absolute guarantee.
 - Always show the credit cost of reaching before reaching; always show the actual
   tally after.
+- Creator→brand pitches are **oracle-safe**: enqueuing never reveals whether the
+  named brand is reachable — the acknowledgement is identical either way. Never
+  imply a contact was found or that a brand is/ isn't on the platform.
+- A creator→brand pitch is **free to enqueue**; the 10-credit charge lands only
+  when an approved pitch actually sends. Say that before enqueue; report the
+  actual tally after.
