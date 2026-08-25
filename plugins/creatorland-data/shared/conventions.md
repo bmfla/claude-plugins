@@ -139,7 +139,7 @@ does NOT use these tools; outreach is an additive skill layer.
 | `query_market_intelligence` | 5 |
 | profile fan-out of N | 1×N |
 | `request_creator_connection` | 10 (one charge per creator, whole sequence) |
-| `request_brand_connection` (creator→brand pitch) | free to enqueue; 10 on an approved send |
+| `request_brand_connection` (creator→brand pitch) | 10 (charged only on an approved send; enqueuing costs nothing) |
 | `get_connection_status` / `list_connections` | free |
 | reaching N creators | 10×N |
 
